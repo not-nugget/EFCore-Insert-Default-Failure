@@ -55,24 +55,10 @@ sealed class Entity
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column(TypeName = "binary(16)")]
-    public EntityId Id { get; set; } = default!;
+    public Guid Id { get; set; } = default!;
 
     [Column(TypeName = "binary(16)")]
     public Guid UUID { get; set; }
-}
-
-sealed class EntityId : IEquatable<EntityId>
-{
-    public Guid Value { get; set; }
-
-    public static EntityId FromGuid(Guid id) => new() { Value = id };
-
-    public bool Equals(EntityId? other) => other is not null && Value == other.Value;
-    public override bool Equals(object? obj) => Equals(obj as EntityId);
-    public override int GetHashCode() => Value.GetHashCode();
-
-    public static bool operator ==(EntityId? lhs, EntityId? rhs) => (lhs is null && rhs is null) || lhs?.Value == rhs?.Value;
-    public static bool operator !=(EntityId? lhs, EntityId? rhs) => !(lhs == rhs);
 }
 
 sealed class Context : DbContext
@@ -97,7 +83,7 @@ sealed class Context : DbContext
         modelBuilder
             .Entity<Entity>()
             .Property(e => e.Id)
-            .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)))
+            .HasConversion(m => m.ToByteArray(), p => new Guid(p))
             .HasDefaultValueSql("(UUID_TO_BIN(UUID(), 1))");
 
         modelBuilder
