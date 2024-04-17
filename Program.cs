@@ -22,17 +22,17 @@ internal class Program
 
         using var transaction = await ctx.Database.BeginTransactionAsync();
 
-        var a = await ctx.Entities.AddAsync(new Entity
+        var a = ctx.Entities.Add(new Entity
         {
             UUID = Guid.NewGuid()
         });
 
-        var b = await ctx.Entities.AddAsync(new Entity
+        var b = ctx.Entities.Add(new Entity
         {
             UUID = Guid.NewGuid()
         });
 
-        var c = await ctx.Entities.AddAsync(new Entity
+        var c = ctx.Entities.Add(new Entity
         {
             UUID = Guid.NewGuid()
         });
