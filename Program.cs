@@ -54,10 +54,8 @@ internal class Program
 sealed class Entity
 {
     [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    [Column(TypeName = "binary(16)")]
     public EntityId Id { get; set; } = default!;
 
-    [Column(TypeName = "binary(16)")]
     public Guid UUID { get; set; }
 }
 
@@ -97,12 +95,12 @@ sealed class Context : DbContext
         modelBuilder
             .Entity<Entity>()
             .Property(e => e.Id)
-            .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)))
-            .HasDefaultValueSql("(UUID_TO_BIN(UUID(), 1))");
+            .HasConversion(m => m.Value.ToString(), p => EntityId.FromGuid(Guid.Parse(p)))
+            .HasDefaultValueSql("(UUID())");
 
         modelBuilder
             .Entity<Entity>()
             .Property(e => e.UUID)
-            .HasConversion(m => m.ToByteArray(), p => new Guid(p));
+            .HasConversion(m => m.ToString(), p => Guid.Parse(p));
     }
 }
