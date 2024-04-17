@@ -98,7 +98,7 @@ sealed class Context : DbContext
             .Entity<Entity>()
             .Property(e => e.Id)
             .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)))
-            .HasDefaultValueSql("(UUID_TO_BIN(UUID(), 1))");
+            .ValueGeneratedOnAdd();
 
         modelBuilder
             .Entity<Entity>()
