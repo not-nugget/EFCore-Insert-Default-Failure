@@ -22,20 +22,11 @@ internal class Program
 
         using var transaction = await ctx.Database.BeginTransactionAsync();
 
-        var a = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
+        var a = ctx.Entities.Update(new Entity());
 
-        var b = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
+        var b = ctx.Entities.Update(new Entity());
 
-        var c = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
+        var c = ctx.Entities.Update(new Entity());
 
         try
         {
@@ -57,8 +48,8 @@ sealed class Entity
     [Column(TypeName = "binary(16)")]
     public EntityId Id { get; set; } = default!;
 
-    [Column(TypeName = "binary(16)")]
-    public Guid UUID { get; set; }
+    //[Column(TypeName = "binary(16)")]
+    //public Guid UUID { get; set; }
 }
 
 sealed class EntityId : IEquatable<EntityId>
@@ -100,9 +91,9 @@ sealed class Context : DbContext
             .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)))
             .HasDefaultValueSql("(UUID_TO_BIN(UUID(), 1))");
 
-        modelBuilder
-            .Entity<Entity>()
-            .Property(e => e.UUID)
-            .HasConversion(m => m.ToByteArray(), p => new Guid(p));
+        //modelBuilder
+        //    .Entity<Entity>()
+        //    .Property(e => e.UUID)
+        //    .HasConversion(m => m.ToByteArray(), p => new Guid(p));
     }
 }
