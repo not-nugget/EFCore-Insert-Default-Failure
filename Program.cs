@@ -97,8 +97,7 @@ sealed class Context : DbContext
         modelBuilder
             .Entity<Entity>()
             .Property(e => e.Id)
-            .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)))
-            .ValueGeneratedOnAdd();
+            .HasConversion(m => m.Value.ToByteArray(), p => EntityId.FromGuid(new Guid(p)));
 
         modelBuilder
             .Entity<Entity>()
