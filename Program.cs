@@ -22,24 +22,26 @@ internal class Program
 
         using var transaction = await ctx.Database.BeginTransactionAsync();
 
-        var a = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
-
-        var b = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
-
-        var c = ctx.Entities.Update(new Entity
-        {
-            UUID = Guid.NewGuid()
-        });
-
         try
         {
+            var a = ctx.Entities.Update(new Entity
+            {
+                UUID = Guid.NewGuid()
+            });
             await ctx.SaveChangesAsync();
+
+            var b = ctx.Entities.Update(new Entity
+            {
+                UUID = Guid.NewGuid()
+            });
+            await ctx.SaveChangesAsync();
+
+            var c = ctx.Entities.Update(new Entity
+            {
+                UUID = Guid.NewGuid()
+            });
+            await ctx.SaveChangesAsync();
+
             await transaction.CommitAsync();
         }
         catch(Exception ex)
